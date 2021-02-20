@@ -109,11 +109,14 @@ class instance_custom_training:
             self.model.train(self.dataset_train, self.dataset_test,models = path_trained_models,  epochs=num_epochs,layers=layers)
 
         else:
-            augmentation = imgaug.augmenters.Sometimes(0.5, [
-                    imgaug.augmenters.Fliplr(0.5),
-                    iaa.Flipud(0.5),
-                    imgaug.augmenters.GaussianBlur(sigma=(0.0, 5.0))
-                ])
+	    if augmentation == True:
+		    augmentation = imgaug.augmenters.Sometimes(0.5, [
+			    imgaug.augmenters.Fliplr(0.5),
+			    iaa.Flipud(0.5),
+			    imgaug.augmenters.GaussianBlur(sigma=(0.0, 5.0))
+			])
+	    else:
+		augmentation = augmentation
     
 
             print('Train %d' % len(self.dataset_train.image_ids), "images")
@@ -330,6 +333,3 @@ def display_box_instances(image, boxes, masks, class_ids, class_name, scores = N
             image, caption, (x1, y1), cv2.FONT_HERSHEY_COMPLEX, 0.5, color = (255, 255, 255))
 
     return image
-
-
-
