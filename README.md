@@ -1,3 +1,58 @@
+### Instructions for Running on custom defined augmentation
+
+First of all, change default repo to : !git clone https://github.com/khanfarhan10/PixelLib.git
+
+Do not use `augmentation = True/False`. Instead Pass a parameter as such,
+
+```model.train(....args...., augmentation = custom_aug)```
+
+where `custom_aug` is the `imgaug` object with all the transforms applied.
+
+The default transform is set to :
+```
+augmentation = imgaug.augmenters.Sometimes(0.5, [
+imgaug.augmenters.Fliplr(0.5),
+iaa.Flipud(0.5),
+imgaug.augmenters.GaussianBlur(sigma=(0.0, 5.0))
+])
+```
+<!--
+Sample Transform:
+```
+seq = iaa.Sequential([
+    iaa.Crop(px=(0, 16)), # crop images from each side by 0 to 16px (randomly chosen)
+    iaa.Fliplr(0.5), # horizontally flip 50% of the images
+    iaa.GaussianBlur(sigma=(0, 3.0)) # blur images with a sigma of 0 to 3.0
+])
+```
+-->
+
+Write the following code before training and you should get improved results bro.
+
+![Imgur](https://i.imgur.com/8FMsAaY.png)
+```
+import imgaug.augmenters as iaa
+
+
+custom_aug = iaa.Sequential([
+            iaa.Fliplr(0.5), 
+            ], random_order=False)
+```
+
+<!--
+transform_finale = A.Compose([
+    A.CLAHE (clip_limit=4.0, tile_grid_size=(8, 8), always_apply=False, p=1),
+    A.HorizontalFlip(p=0.5),
+    A.RandomBrightnessContrast(p=0.2),
+])
+-->
+
+Finally Train the model
+
+```model.train(....args...., augmentation = custom_aug)```
+
+
+
 ![alt_test1](instance_mask/cover.jpg)
 # PixelLib 
 
