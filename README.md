@@ -39,15 +39,16 @@ import imgaug.augmenters as iaa
 custom_aug = iaa.Sequential([
             iaa.OneOf([iaa.contrast.CLAHE(clip_limit=4.0, tile_grid_size_px=(8, 8)),
                        iaa.contrast.GammaContrast(gamma=(0.7, 1.7)),
-                       iaa.GaussianBlur(sigma=(0.0, 5.0))
-                       ]), 
-            iaa.Rotate()
+                       iaa.color.MultiplyBrightness(mul=(0.7, 1.3))
+                       ]),
+            iaa.Affine(rotate=(-180,180))
             ], random_order=False)
 ```
 
 <!--
 .contrast.CLAHE(clip_limit=(0.1, 8), tile_grid_size_px=(3, 12), tile_grid_size_px_min=3, from_colorspace='RGB', to_colorspace='Lab', seed=None, name=None, random_state='deprecated', deterministic='deprecated')
 .contrast.GammaContrast(gamma=(0.7, 1.7), per_channel=False, seed=None, name=None, random_state='deprecated', deterministic='deprecated')
+.color.MultiplyBrightness(mul=(0.7, 1.3), to_colorspace=['YCrCb', 'HSV', 'HLS', 'Lab', 'Luv', 'YUV'], from_colorspace='RGB', seed=None, name=None, random_state='deprecated', deterministic='deprecated')
 -->
 
 <!--
