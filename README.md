@@ -1,6 +1,8 @@
 ### Instructions for Running on custom defined augmentation
 
-First of all, change default repo to : !git clone https://github.com/khanfarhan10/PixelLib.git
+First of all, change default repo to : 
+
+```!git clone https://github.com/khanfarhan10/PixelLib.git```
 
 Do not use `augmentation = True/False`. Instead Pass a parameter as such,
 
@@ -33,13 +35,23 @@ Write the following code before training and you should get improved results bro
 ```
 import imgaug.augmenters as iaa
 
-
+# skipping flips
 custom_aug = iaa.Sequential([
-            iaa.Fliplr(0.5), 
+            iaa.OneOf([iaa.contrast.CLAHE(clip_limit=4.0, tile_grid_size_px=(8, 8)),
+                       iaa.contrast.GammaContrast(gamma=(0.7, 1.7)),
+                       iaa.GaussianBlur(sigma=(0.0, 5.0))
+                       ]), 
+            iaa.Rotate()
             ], random_order=False)
 ```
 
 <!--
+.contrast.CLAHE(clip_limit=(0.1, 8), tile_grid_size_px=(3, 12), tile_grid_size_px_min=3, from_colorspace='RGB', to_colorspace='Lab', seed=None, name=None, random_state='deprecated', deterministic='deprecated')
+.contrast.GammaContrast(gamma=(0.7, 1.7), per_channel=False, seed=None, name=None, random_state='deprecated', deterministic='deprecated')
+-->
+
+<!--
+Original Transform
 transform_finale = A.Compose([
     A.CLAHE (clip_limit=4.0, tile_grid_size=(8, 8), always_apply=False, p=1),
     A.HorizontalFlip(p=0.5),
@@ -51,6 +63,9 @@ Finally Train the model
 
 ```model.train(....args...., augmentation = custom_aug)```
 
+Reading:
+- CLAHE - https://imgaug.readthedocs.io/en/latest/source/api_augmenters_contrast.html
+- 
 
 
 ![alt_test1](instance_mask/cover.jpg)
